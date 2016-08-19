@@ -1,0 +1,48 @@
+name: SkyBukkit
+main: SkyBukkitPlugin
+version: ${pom.version}
+author: Keeley Hoek (escortkeel)
+commands:
+  island:
+    aliases: is
+permissions:    
+  skybukkit.*:
+    children:
+      skybukkit.island.*:
+        children:
+          skybukkit.island.create:
+            description: Allows the player to create a new island
+          skybukkit.island.destroy:
+            description: Allows the player to destroy their island
+          skybukkit.island.replace:
+            description: Allows the player to replace their island
+      skybukkit.tp.*:
+        children:
+          skybukkit.tp.home:
+            description: Allows the player to teleport to their island
+          skybukkit.tp.spawn:
+            description: Allows the player to teleport to the main world
+      skybukkit.party.*:
+        children:
+          skybukkit.party.invite:
+            description: Allows the player to invite other players
+          skybukkit.party.kick:
+            description: Allows the player to kick other players
+          skybukkit.party.promote:
+            description: Allows the player to change the leader of their party
+          skybukkit.party.accept:
+            description: Allows the player to accept an invite
+          skybukkit.party.decline:
+            description: Allows the player to decline an invite
+          skybukkit.party.leave:
+            description: Allows the player to leave their party
+          skybukkit.party.leader:
+            description: Allows the player to view their party's leader
+          skybukkit.party.members:
+            description: Allows the player to view their party's members
+      skybukkit.admin.*:
+        children:
+          skybukkit.admin.destroy:
+            description: Allows the player to destroy another player's island
+          skybukkit.admin.tp:
+            description: Allows the player to teleport to another players's island
