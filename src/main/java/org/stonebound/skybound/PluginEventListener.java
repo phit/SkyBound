@@ -33,9 +33,9 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class PluginEventListener implements Listener {
 
-    public final SkyBukkitPlugin plugin;
+    public final SkyBoundPlugin plugin;
 
-    public PluginEventListener(SkyBukkitPlugin plugin) {
+    public PluginEventListener(SkyBoundPlugin plugin) {
         this.plugin = plugin;
     }
 

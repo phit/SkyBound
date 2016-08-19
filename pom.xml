@@ -3,14 +3,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.escortkeel</groupId>
-    <artifactId>skybukkit</artifactId>
+    <groupId>org.stonebound</groupId>
+    <artifactId>skybound</artifactId>
     <version>0.8.0</version>
     <packaging>jar</packaging>
 
-    <name>SkyBukkit</name>
-    <description>SkyBukkit is a plugin for Bukkit, a Minecraft Server API.</description>
-    <url>http://dev.bukkit.org/server-mods/SkyBukkit/</url>
+    <name>SkyBound</name>
+    <description>SkyBound is a plugin for Bukkit, a Minecraft Server API.</description>
+    <url>https://github.com/phit/SkyBound</url>
 	
     <licenses>
         <license>
@@ -21,9 +21,9 @@
     </licenses>
 
     <scm>
-        <connection>git://github.com/escortkeel/SkyBukkit.git</connection>
-        <developerConnection>scm:git:https://github.com/escortkeel/SkyBukkit.git</developerConnection>
-        <url>https://github.com/escortkeel/SkyBukkit</url>
+        <connection>git://github.com/phit/SkyBound.git</connection>
+        <developerConnection>scm:git:https://github.com/phit/SkyBound.git</developerConnection>
+        <url>https://github.com/phit/SkyBound</url>
     </scm>
 	
     <properties>

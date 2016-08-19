@@ -34,18 +34,15 @@ import java.util.logging.Logger;
 
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.Chest;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class SkyBukkitPlugin extends JavaPlugin {
+public class SkyBoundPlugin extends JavaPlugin {
 
     static {
         ConfigurationSerialization.registerClass(Island.class);

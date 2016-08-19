@@ -36,15 +36,15 @@ import org.bukkit.entity.Player;
 
 public class PluginCommandExecutor implements CommandExecutor {
 
-    private final SkyBukkitPlugin plugin;
+    private final SkyBoundPlugin plugin;
 
-    public PluginCommandExecutor(SkyBukkitPlugin plugin) {
+    public PluginCommandExecutor(SkyBoundPlugin plugin) {
         this.plugin = plugin;
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(SkyBukkitPlugin.toChat("You have to be a player to excecute that command!"));
+            sender.sendMessage(SkyBoundPlugin.toChat("You have to be a player to excecute that command!"));
 
             return false;
         }
@@ -67,11 +67,11 @@ public class PluginCommandExecutor implements CommandExecutor {
             } else if (args[0].equals("members")) {
                 return members(player);
             } else if (args[0].equals("help")) {
-                player.sendMessage(SkyBukkitPlugin.toChat("Please specify a help page by using \"/island help <page>\". There are two pages in this help guide."));
+                player.sendMessage(SkyBoundPlugin.toChat("Please specify a help page by using \"/island help <page>\". There are two pages in this help guide."));
 
                 return true;
             } else {
-                player.sendMessage(SkyBukkitPlugin.toChat("Invalid command syntax. Type: /island help"));
+                player.sendMessage(SkyBoundPlugin.toChat("Invalid command syntax. Type: /island help"));
 
                 return false;
             }
@@ -85,7 +85,7 @@ public class PluginCommandExecutor implements CommandExecutor {
             } else if (args[0].equals("promote")) {
                 return promote(player, args[1]);
             } else {
-                player.sendMessage(SkyBukkitPlugin.toChat("Invalid command syntax. Type: /island help"));
+                player.sendMessage(SkyBoundPlugin.toChat("Invalid command syntax. Type: /island help"));
 
                 return false;
             }
@@ -93,12 +93,12 @@ public class PluginCommandExecutor implements CommandExecutor {
             if (args[0].equals("admin")) {
                 return admin(player, args[0], args[1]);
             } else {
-                player.sendMessage(SkyBukkitPlugin.toChat("Invalid command syntax. Type: /island help"));
+                player.sendMessage(SkyBoundPlugin.toChat("Invalid command syntax. Type: /island help"));
 
                 return false;
             }
         } else {
-            player.sendMessage(SkyBukkitPlugin.toChat("Invalid command syntax. Type: /island help"));
+            player.sendMessage(SkyBoundPlugin.toChat("Invalid command syntax. Type: /island help"));
 
             return false;
         }
@@ -106,21 +106,21 @@ public class PluginCommandExecutor implements CommandExecutor {
 
     private boolean create(Player player) {
         if (plugin.getPartyByPlayer(player.getName()) != null) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You cannot use this command while in a party."));
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " Use \"/island leave\" to leave."));
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You cannot use this command while in a party."));
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " Use \"/island leave\" to leave."));
         } else {
             Island island = plugin.getIslandByName(player.getName());
 
             if (island != null) {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You already have an island at " + ChatColor.RESET + island.getX() + ", " + island.getZ()));
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " Use \"/island destroy\" to destroy it."));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You already have an island at " + ChatColor.RESET + island.getX() + ", " + island.getZ()));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " Use \"/island destroy\" to destroy it."));
             } else {
-                if (player.hasPermission("skybukkit.island.create")) {
+                if (player.hasPermission("skybound.island.create")) {
                     plugin.createIsland(player);
 
-                    player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " Island Created Successfully!"));
+                    player.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " Island Created Successfully!"));
                 } else {
-                    player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+                    player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
                 }
             }
         }
@@ -129,11 +129,11 @@ public class PluginCommandExecutor implements CommandExecutor {
     }
 
     private boolean home(Player player) {
-        if (!player.hasPermission("skybukkit.tp.home")) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+        if (!player.hasPermission("skybound.tp.home")) {
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
         } else {
             if (plugin.getIslandByName(player.getName()) == null && plugin.getPartyByPlayer(player.getName()) == null) {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have an island and aren't in a party."));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have an island and aren't in a party."));
 
                 return true;
             }
@@ -149,52 +149,52 @@ public class PluginCommandExecutor implements CommandExecutor {
             int page = Integer.parseInt(rawPage);
 
             if (page == 1) {
-                player.sendMessage(SkyBukkitPlugin.toChat("------------ " + ChatColor.GOLD + "Help: Page 1" + ChatColor.RESET + " ------------"));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island create - Create a new SkyBlock."));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island home - Teleport to your SkyBlock"));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island invite <player> - Invite <player> to your SkyBlock, creating a party."));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island kick <player> - Kick <player> from your party."));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island promote <player> - Make <player> the party leader."));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island accept - Accept a pending invitation."));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island decline - Decline a pending inviation."));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island leave - Leave your current party."));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island leader - Display your party leader."));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island members - Display your party's members."));
+                player.sendMessage(SkyBoundPlugin.toChat("------------ " + ChatColor.GOLD + "Help: Page 1" + ChatColor.RESET + " ------------"));
+                player.sendMessage(SkyBoundPlugin.toChat("/island create - Create a new SkyBlock."));
+                player.sendMessage(SkyBoundPlugin.toChat("/island home - Teleport to your SkyBlock"));
+                player.sendMessage(SkyBoundPlugin.toChat("/island invite <player> - Invite <player> to your SkyBlock, creating a party."));
+                player.sendMessage(SkyBoundPlugin.toChat("/island kick <player> - Kick <player> from your party."));
+                player.sendMessage(SkyBoundPlugin.toChat("/island promote <player> - Make <player> the party leader."));
+                player.sendMessage(SkyBoundPlugin.toChat("/island accept - Accept a pending invitation."));
+                player.sendMessage(SkyBoundPlugin.toChat("/island decline - Decline a pending inviation."));
+                player.sendMessage(SkyBoundPlugin.toChat("/island leave - Leave your current party."));
+                player.sendMessage(SkyBoundPlugin.toChat("/island leader - Display your party leader."));
+                player.sendMessage(SkyBoundPlugin.toChat("/island members - Display your party's members."));
             } else if (page == 2) {
-                player.sendMessage(SkyBukkitPlugin.toChat("------------ " + ChatColor.GOLD + "Help: Page 2" + ChatColor.RESET + " ------------"));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island admin destroy <player> - Destroy <player>'s SkyBlock."));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island admin tp <player> - Teleport to <player>'s SkyBlock."));
-                player.sendMessage(SkyBukkitPlugin.toChat("/island help - Display this help message."));
+                player.sendMessage(SkyBoundPlugin.toChat("------------ " + ChatColor.GOLD + "Help: Page 2" + ChatColor.RESET + " ------------"));
+                player.sendMessage(SkyBoundPlugin.toChat("/island admin destroy <player> - Destroy <player>'s SkyBlock."));
+                player.sendMessage(SkyBoundPlugin.toChat("/island admin tp <player> - Teleport to <player>'s SkyBlock."));
+                player.sendMessage(SkyBoundPlugin.toChat("/island help - Display this help message."));
             } else {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " Invalid page number specified. Please specify a number between 1 and 2 inclusive."));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " Invalid page number specified. Please specify a number between 1 and 2 inclusive."));
             }
         } catch (NumberFormatException nfe) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " Invalid page number specified. Please specify a number between 1 and 2 inclusive."));
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " Invalid page number specified. Please specify a number between 1 and 2 inclusive."));
         }
 
         return true;
     }
 
     private boolean accept(Player player) {
-        if (!player.hasPermission("skybukkit.party.accept")) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+        if (!player.hasPermission("skybound.party.accept")) {
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
         } else {
             Party party = plugin.getInvite(player.getName());
 
             if (party == null) {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have a pending invite!"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have a pending invite!"));
             } else {
                 plugin.clearInvite(player.getName());
 
                 if (party.getMembers().size() + 1 == plugin.getMaxPartySize() && plugin.getMaxPartySize() != 0) {
-                    player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " Could not accept the invite. The party would become too large!"));
+                    player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " Could not accept the invite. The party would become too large!"));
 
                     for (String member : party.getMembers()) {
                         if (!member.equals(player.getName())) {
                             Player memberPlayer = Bukkit.getServer().getPlayer(member);
 
                             if (memberPlayer != null) {
-                                memberPlayer.sendMessage(SkyBukkitPlugin.toChat(player.getName() + ChatColor.RED + " " + " just tried to join your party but couldn't because it would become too large!"));
+                                memberPlayer.sendMessage(SkyBoundPlugin.toChat(player.getName() + ChatColor.RED + " " + " just tried to join your party but couldn't because it would become too large!"));
                             }
                         }
                     }
@@ -204,18 +204,18 @@ public class PluginCommandExecutor implements CommandExecutor {
                     Island island = plugin.getIslandByName(player.getName());
 
                     if (island != null) {
-                        player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + "You already have your own island!"));
+                        player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + "You already have your own island!"));
                         return true;
                     }
 
-                    player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " Invite Accepted!"));
+                    player.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " Invite Accepted!"));
 
                     for (String member : party.getMembers()) {
                         if (!member.equals(player.getName())) {
                             Player memberPlayer = Bukkit.getServer().getPlayer(member);
 
                             if (memberPlayer != null) {
-                                memberPlayer.sendMessage(SkyBukkitPlugin.toChat("" + player.getName() + ChatColor.GREEN + " just joined your party!"));
+                                memberPlayer.sendMessage(SkyBoundPlugin.toChat("" + player.getName() + ChatColor.GREEN + " just joined your party!"));
                             }
                         }
                     }
@@ -227,17 +227,17 @@ public class PluginCommandExecutor implements CommandExecutor {
     }
 
     private boolean decline(Player player) {
-        if (!player.hasPermission("skybukkit.party.decline")) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+        if (!player.hasPermission("skybound.party.decline")) {
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
         } else {
             Party party = plugin.getInvite(player.getName());
 
             if (party == null) {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have a pending invite!"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have a pending invite!"));
             } else {
                 plugin.clearInvite(player.getName());
 
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " Invite Declined!"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " Invite Declined!"));
             }
         }
 
@@ -245,20 +245,20 @@ public class PluginCommandExecutor implements CommandExecutor {
     }
 
     private boolean leave(Player player) {
-        if (!player.hasPermission("skybukkit.party.leave")) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+        if (!player.hasPermission("skybound.party.leave")) {
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
         } else {
             Party party = plugin.getPartyByPlayer(player.getName());
 
             if (party == null) {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You aren't in a party!"));
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " Use \"/island invite <player>\" to create one."));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You aren't in a party!"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " Use \"/island invite <player>\" to create one."));
             } else {
                 boolean wasLeader = party.getLeader().equals(player.getName());
 
                 party.removeMember(player.getName());
 
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " Successfully Left Party!"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " Successfully Left Party!"));
 
                 if (party.getMembers().isEmpty()) {
                     plugin.removeParty(party);
@@ -268,17 +268,17 @@ public class PluginCommandExecutor implements CommandExecutor {
                             Player memberPlayer = Bukkit.getServer().getPlayer(member);
 
                             if (memberPlayer != null) {
-                                memberPlayer.sendMessage(SkyBukkitPlugin.toChat("" + player.getName() + ChatColor.GREEN + " just left your party!"));
+                                memberPlayer.sendMessage(SkyBoundPlugin.toChat("" + player.getName() + ChatColor.GREEN + " just left your party!"));
                             }
                         }
                     }
 
                     if (wasLeader) {
-                        player.sendMessage(SkyBukkitPlugin.toChat("" + party.getLeader() + ChatColor.GREEN + " has been made leader!"));
+                        player.sendMessage(SkyBoundPlugin.toChat("" + party.getLeader() + ChatColor.GREEN + " has been made leader!"));
 
                         Player otherPlayer = Bukkit.getPlayer(party.getLeader());
                         if (otherPlayer != null) {
-                            otherPlayer.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " You have been made the leader of your party!"));
+                            otherPlayer.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " You have been made the leader of your party!"));
                         }
                     }
                 }
@@ -289,16 +289,16 @@ public class PluginCommandExecutor implements CommandExecutor {
     }
 
     private boolean leader(Player player) {
-        if (!player.hasPermission("skybukkit.party.get.leader")) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+        if (!player.hasPermission("skybound.party.get.leader")) {
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
         } else {
             Party party = plugin.getPartyByPlayer(player.getName());
 
             if (party == null) {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You aren't in a party!"));
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " Use \"/island invite <player>\" to create one."));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You aren't in a party!"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " Use \"/island invite <player>\" to create one."));
             } else {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " The leader of your party is: " + ChatColor.RESET + party.getLeader()));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " The leader of your party is: " + ChatColor.RESET + party.getLeader()));
             }
         }
 
@@ -306,19 +306,19 @@ public class PluginCommandExecutor implements CommandExecutor {
     }
 
     private boolean members(Player player) {
-        if (!player.hasPermission("skybukkit.party.get.members")) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+        if (!player.hasPermission("skybound.party.get.members")) {
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
         } else {
             Party party = plugin.getPartyByPlayer(player.getName());
 
             if (party == null) {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You aren't in a party!"));
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " Use \"/island invite <player>\" to create one."));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You aren't in a party!"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " Use \"/island invite <player>\" to create one."));
             } else {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " The members of this party are:"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " The members of this party are:"));
 
                 for (String playerName : party.getMembers()) {
-                    player.sendMessage(SkyBukkitPlugin.toChat(playerName));
+                    player.sendMessage(SkyBoundPlugin.toChat(playerName));
                 }
             }
         }
@@ -332,15 +332,15 @@ public class PluginCommandExecutor implements CommandExecutor {
         } else if (type.equals("tp")) {
             return adminTp(player, other);
         } else {
-            player.sendMessage(SkyBukkitPlugin.toChat("Invalid command syntax. Type: /island help"));
+            player.sendMessage(SkyBoundPlugin.toChat("Invalid command syntax. Type: /island help"));
 
             return false;
         }
     }
 
     private boolean adminDestroy(Player player, String other) {
-        if (!player.hasPermission("skybukkit.admin.destroy")) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+        if (!player.hasPermission("skybound.admin.destroy")) {
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
         } else {
             Island island = plugin.getIslandByName(other);
 
@@ -348,7 +348,7 @@ public class PluginCommandExecutor implements CommandExecutor {
                 Party party = plugin.getPartyByPlayer(player.getName());
 
                 if (party == null) {
-                    player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " The specified player does not have an island and is not in a party."));
+                    player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " The specified player does not have an island and is not in a party."));
                 } else {
                     island = party.getIsland();
                 }
@@ -361,7 +361,7 @@ public class PluginCommandExecutor implements CommandExecutor {
                     Player victim = Bukkit.getServer().getPlayer(other);
 
                     if (victim != null) {
-                        victim.sendMessage(SkyBukkitPlugin.toChat("" + player.getName() + ChatColor.RED + " just destroyed your SkyBlock."));
+                        victim.sendMessage(SkyBoundPlugin.toChat("" + player.getName() + ChatColor.RED + " just destroyed your SkyBlock."));
                     }
 
                     plugin.destroyIsland(island);
@@ -373,14 +373,14 @@ public class PluginCommandExecutor implements CommandExecutor {
                         Player victim = Bukkit.getServer().getPlayer(member);
 
                         if (victim != null) {
-                            victim.sendMessage(SkyBukkitPlugin.toChat("" + player.getName() + ChatColor.RED + " just disbanded your party!"));
+                            victim.sendMessage(SkyBoundPlugin.toChat("" + player.getName() + ChatColor.RED + " just disbanded your party!"));
                         }
                     }
 
                     plugin.destroyIsland(island);
                     plugin.removeParty(victims);
 
-                    player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " Island Destroyed Successfully!"));
+                    player.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " Island Destroyed Successfully!"));
                 }
             }
         }
@@ -389,8 +389,8 @@ public class PluginCommandExecutor implements CommandExecutor {
     }
 
     private boolean adminTp(Player player, String other) {
-        if (!player.hasPermission("skybukkit.admin.tp")) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+        if (!player.hasPermission("skybound.admin.tp")) {
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
         } else {
             Island island = plugin.getIslandByName(other);
 
@@ -398,7 +398,7 @@ public class PluginCommandExecutor implements CommandExecutor {
                 Party party = plugin.getPartyByPlayer(player.getName());
 
                 if (party == null) {
-                    player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " The specified player does not have an island and is not in a party."));
+                    player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " The specified player does not have an island and is not in a party."));
                 } else {
                     island = party.getIsland();
                 }
@@ -407,7 +407,7 @@ public class PluginCommandExecutor implements CommandExecutor {
             if (island != null) {
                 plugin.teleportToIsland(player, island);
 
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " Teleported Successfully!"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " Teleported Successfully!"));
             }
         }
 
@@ -415,27 +415,27 @@ public class PluginCommandExecutor implements CommandExecutor {
     }
 
     private boolean invite(Player player, String other) {
-        if (!player.hasPermission("skybukkit.party.invite")) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+        if (!player.hasPermission("skybound.party.invite")) {
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
         } else {
             Player otherPlayer = Bukkit.getServer().getPlayer(other);
 
             if (otherPlayer == null) {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " The specified player is not online!"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " The specified player is not online!"));
             } else {
                 Party inviter = plugin.getInvite(player.getName());
 
                 if (inviter != null) {
-                    player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " The specified player already has a pending invite!"));
+                    player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " The specified player already has a pending invite!"));
                 } else {
                     if (plugin.getPartyByPlayer(otherPlayer.getName()) != null) {
-                        player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " The specified player is already in a party!"));
+                        player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " The specified player is already in a party!"));
                     } else {
                         Party party = plugin.getPartyByPlayer(player.getName());
 
                         if (party == null) {
                             if (plugin.getIslandByName(player.getName()) == null) {
-                                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You have to have an island or be a party leader to do that!"));
+                                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You have to have an island or be a party leader to do that!"));
                             } else {
                                 party = plugin.addParty(plugin.getIslandByName(player.getName()), player.getName());
                             }
@@ -443,25 +443,25 @@ public class PluginCommandExecutor implements CommandExecutor {
                             if (!party.getLeader().equals(player.getName())) {
                                 party = null;
 
-                                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You aren't the leader of the party!"));
+                                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You aren't the leader of the party!"));
                             }
                         }
 
                         if (party != null) {
                             plugin.sendInvite(party, otherPlayer.getName());
 
-                            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " Invitaion Sent!"));
+                            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " Invitaion Sent!"));
 
                             if (party.getMembers().size() == 1) {
-                                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " A new party was created just for you!"));
+                                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " A new party was created just for you!"));
                             }
 
-                            otherPlayer.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " You have recieved an invite from: " + ChatColor.RESET + player.getName()));
-                            otherPlayer.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " Use \"/island accept\" to accept the invite."));
-                            otherPlayer.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " Use \"/island decline\" to decline the invite."));
+                            otherPlayer.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " You have recieved an invite from: " + ChatColor.RESET + player.getName()));
+                            otherPlayer.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " Use \"/island accept\" to accept the invite."));
+                            otherPlayer.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " Use \"/island decline\" to decline the invite."));
 
                             if (plugin.getIslandByName(otherPlayer.getName()) != null) {
-                                otherPlayer.sendMessage(SkyBukkitPlugin.toChat(ChatColor.YELLOW + " WARNING: By accepting, you will destroy your current island."));
+                                otherPlayer.sendMessage(SkyBoundPlugin.toChat(ChatColor.YELLOW + " WARNING: By accepting, you will destroy your current island."));
                             }
                         }
                     }
@@ -473,29 +473,29 @@ public class PluginCommandExecutor implements CommandExecutor {
     }
 
     private boolean kick(Player player, String other) {
-        if (!player.hasPermission("skybukkit.party.kick")) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+        if (!player.hasPermission("skybound.party.kick")) {
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
         } else {
             Party party = plugin.getPartyByPlayer(player.getName());
 
             if (party == null) {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You aren't in a party!"));
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " Use \"/island invite <player>\" to create one."));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You aren't in a party!"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " Use \"/island invite <player>\" to create one."));
             } else {
                 if (!party.getLeader().equals(player.getName())) {
-                    player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You aren't the leader of the party!"));
+                    player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You aren't the leader of the party!"));
                 } else {
                     if (!party.contains(other)) {
-                        player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " There is no player with that name in your party!"));
+                        player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " There is no player with that name in your party!"));
                     } else {
                         party.removeMember(other);
 
-                        player.sendMessage(SkyBukkitPlugin.toChat("" + other + ChatColor.GREEN + " has been kicked from your party!"));
+                        player.sendMessage(SkyBoundPlugin.toChat("" + other + ChatColor.GREEN + " has been kicked from your party!"));
 
                         Player victim = Bukkit.getServer().getPlayer(other);
 
                         if (victim != null) {
-                            victim.sendMessage(SkyBukkitPlugin.toChat("" + player.getName() + ChatColor.RED + " has kicked you!"));
+                            victim.sendMessage(SkyBoundPlugin.toChat("" + player.getName() + ChatColor.RED + " has kicked you!"));
                         }
                     }
                 }
@@ -506,31 +506,31 @@ public class PluginCommandExecutor implements CommandExecutor {
     }
 
     private boolean promote(Player player, String other) {
-        if (!player.hasPermission("skybukkit.party.promote")) {
-            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
+        if (!player.hasPermission("skybound.party.promote")) {
+            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
         } else {
             Party party = plugin.getPartyByPlayer(player.getName());
 
             if (party == null) {
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You aren't in a party!"));
-                player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " Use \"/island invite <player>\" to create one."));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You aren't in a party!"));
+                player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " Use \"/island invite <player>\" to create one."));
             } else {
                 if (!party.getLeader().equals(player.getName())) {
-                    player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You aren't the leader of the party!"));
+                    player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You aren't the leader of the party!"));
                 } else {
                     if (!party.contains(other)) {
-                        player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " There is no player with that name in your party!"));
+                        player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " There is no player with that name in your party!"));
                     } else {
                         if (player.getName().equals(other)) {
-                            player.sendMessage(SkyBukkitPlugin.toChat(ChatColor.RED + " You already are the party leader!"));
+                            player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You already are the party leader!"));
                         } else {
                             party.changeLeader(other);
 
-                            player.sendMessage(SkyBukkitPlugin.toChat("" + other + ChatColor.GREEN + " has been made the leader of your party!"));
+                            player.sendMessage(SkyBoundPlugin.toChat("" + other + ChatColor.GREEN + " has been made the leader of your party!"));
 
                             Player otherPlayer = Bukkit.getPlayer(other);
                             if (otherPlayer != null) {
-                                otherPlayer.sendMessage(SkyBukkitPlugin.toChat(ChatColor.GREEN + " You have been made the leader of your party!"));
+                                otherPlayer.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " You have been made the leader of your party!"));
                             }
                         }
                     }

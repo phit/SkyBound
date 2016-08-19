@@ -1,7 +1,7 @@
-name: SkyBukkit
-main: SkyBukkitPlugin
+name: SkyBound
+main: SkyBound
 version: ${pom.version}
-author: Keeley Hoek (escortkeel)
+author: phit, Keeley Hoek (escortkeel)
 commands:
   island:
     aliases: is
@@ -12,16 +12,10 @@ permissions:
         children:
           skybukkit.island.create:
             description: Allows the player to create a new island
-          skybukkit.island.destroy:
-            description: Allows the player to destroy their island
-          skybukkit.island.replace:
-            description: Allows the player to replace their island
       skybukkit.tp.*:
         children:
           skybukkit.tp.home:
             description: Allows the player to teleport to their island
-          skybukkit.tp.spawn:
-            description: Allows the player to teleport to the main world
       skybukkit.party.*:
         children:
           skybukkit.party.invite:
