@@ -311,20 +311,7 @@ public class SkyBoundPlugin extends JavaPlugin {
             world.getBlockAt(island.getX() + pos[0], islandHeight + pos[1], island.getZ() + pos[2]).setTypeId(rootsBlockID);
         }
 
-
         islands.add(island);
-
-        final double x = islandSize / 2;
-        final double z = islandSize / 2;
-
-        for (Entity entity : world.getEntities()) {
-            if (((x + islandSize / 2) > entity.getLocation().getX()
-                    || entity.getLocation().getX() > (x - islandSize / 2))
-                    || ((z + islandSize / 2) > entity.getLocation().getZ()
-                    || entity.getLocation().getZ() > (z - islandSize / 2))) {
-                entity.remove();
-            }
-        }
 
         backupData();
     }
@@ -336,8 +323,8 @@ public class SkyBoundPlugin extends JavaPlugin {
                     for (int z = island.getZ() - islandSize / 2; z < island.getZ() + islandSize / 2; z++) {
                         Block block = world.getBlockAt(x, y, z);
 
-                        if (block.getTypeId() != 0) {
-                            block.setTypeId(0);
+                        if (block.getType() != (Material.AIR)) {
+                            block.setType(Material.AIR);
                         }
                     }
                 }

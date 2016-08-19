@@ -91,7 +91,7 @@ public class PluginCommandExecutor implements CommandExecutor {
             }
         } else if (args.length == 3) {
             if (args[0].equals("admin")) {
-                return admin(player, args[0], args[1]);
+                return admin(player, args[1], args[2]);
             } else {
                 player.sendMessage(SkyBoundPlugin.toChat("Invalid command syntax. Type: /island help"));
 
@@ -117,7 +117,6 @@ public class PluginCommandExecutor implements CommandExecutor {
             } else {
                 if (player.hasPermission("skybound.island.create")) {
                     plugin.createIsland(player);
-
                     player.sendMessage(SkyBoundPlugin.toChat(ChatColor.GREEN + " Island Created Successfully!"));
                 } else {
                     player.sendMessage(SkyBoundPlugin.toChat(ChatColor.RED + " You don't have permission to do that!"));
