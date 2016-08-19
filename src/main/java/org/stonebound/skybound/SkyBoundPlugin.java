@@ -258,10 +258,15 @@ public class SkyBoundPlugin extends JavaPlugin {
 
         // This is similar to how Botania itself generates an island in GoG. This is being done to avoid a soft dependency.
         for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 4; j++) {
+            for (int j = 1; j < 4; j++) {
                 for (int k = 0; k < 3; k++) {
-                    world.getBlockAt(island.getX() - 1 + i, islandHeight - j, island.getZ() - 1 + k).setType(Material.GRASS);
+                    world.getBlockAt(island.getX() - 1 + i, islandHeight - j, island.getZ() - 1 + k).setType(Material.DIRT);
                 }
+            }
+        }
+        for (int i = 0; i < 3; i++) {
+            for (int k = 0; k < 3; k++) {
+                world.getBlockAt(island.getX() - 1 + i, islandHeight, island.getZ() - 1 + k).setType(Material.GRASS);
             }
         }
         for (int c = -3; c < 2; c++) {

@@ -67,9 +67,7 @@ public class PluginCommandExecutor implements CommandExecutor {
             } else if (args[0].equals("members")) {
                 return members(player);
             } else if (args[0].equals("help")) {
-                player.sendMessage(SkyBoundPlugin.toChat("Please specify a help page by using \"/island help <page>\". There are two pages in this help guide."));
-
-                return true;
+                return help(player, "1");
             } else {
                 player.sendMessage(SkyBoundPlugin.toChat("Invalid command syntax. Type: /island help"));
 
