@@ -1,5 +1,5 @@
 name: SkyBound
-main: SkyBoundPlugin
+main: org.stonebound.skybound.SkyBoundPlugin
 version: ${pom.version}
 author: phit
 commands:

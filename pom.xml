@@ -5,7 +5,7 @@
 
     <groupId>org.stonebound</groupId>
     <artifactId>skybound</artifactId>
-    <version>0.8.0</version>
+    <version>0.8.1</version>
     <packaging>jar</packaging>
 
     <name>SkyBound</name>
