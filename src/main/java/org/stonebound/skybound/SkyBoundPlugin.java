@@ -51,11 +51,11 @@ public class SkyBoundPlugin extends JavaPlugin {
     private static final Logger log = Logger.getLogger("Minecraft");
 
     public static String toChat(String msg) {
-        return ChatColor.GOLD + "[SkyBukkit] " + ChatColor.RESET + msg;
+        return ChatColor.GOLD + "[SkyBound] " + ChatColor.RESET + msg;
     }
     private File dataFile;
     private Island spawnIsland;
-    private int partyMaxSize, islandHeight, islandSpacing, islandSize, rootsBlockID;
+    private int partyMaxSize, islandHeight, islandSpacing, islandSize, rootsBlockID, manaflameBlockID;
     private World world;
     private Map<String, Party> invites;
     private Stack<Island> orphaned;
@@ -77,7 +77,7 @@ public class SkyBoundPlugin extends JavaPlugin {
         getCommand("island").setExecutor(new PluginCommandExecutor(this));
         getServer().getPluginManager().registerEvents(new PluginEventListener(this), this);
 
-        log.log(Level.INFO, getDescription().getFullName().concat(" is enabled! By Keeley Hoek (escortkeel)"));
+        log.log(Level.INFO, getDescription().getFullName().concat(" is enabled!"));
     }
 
     @Override
@@ -156,8 +156,14 @@ public class SkyBoundPlugin extends JavaPlugin {
             rootsBlockID = (Integer) getConfig().get("rootsBlockID");
         } else {
             rootsBlockID = 17;
-
             log.log(Level.WARNING, toChat("Invalid or no Botania roots block id specified. Defaulting to Vanilla logs."));
+        }
+
+        if (getConfig().get("manaflameBlockID") instanceof Integer) {
+            manaflameBlockID = (Integer) getConfig().get("manaflameBlockID");
+        } else {
+            manaflameBlockID = 0;
+            log.log(Level.WARNING, toChat("Invalid or no Botania mana flame block id specified. Defaulting to Air."));
         }
 
     }
@@ -184,7 +190,8 @@ public class SkyBoundPlugin extends JavaPlugin {
         getConfig().set("islandSpacing", islandSpacing);
         getConfig().set("islandSize", islandSize);
 
-        getConfig().set("rootsBlockID", islandSize);
+        getConfig().set("rootsBlockID", rootsBlockID);
+        getConfig().set("manaflameBlockID", manaflameBlockID);
 
         ArrayList itemList = new ArrayList();
 
@@ -298,7 +305,7 @@ public class SkyBoundPlugin extends JavaPlugin {
                 {1, -5, 2},
                 {1, -2, 0},
         };
-        world.getBlockAt(island.getX() + 1, islandHeight + 3, island.getZ() + 1).setTypeId(rootsBlockID);
+        world.getBlockAt(island.getX() + 1, islandHeight + 3, island.getZ() + 1).setTypeId(manaflameBlockID);
         world.getBlockAt(island.getX(), islandHeight - 3, island.getZ()).setType(Material.BEDROCK);
         for (int[] pos : roots) {
             world.getBlockAt(island.getX() + pos[0], islandHeight + pos[1], island.getZ() + pos[2]).setTypeId(rootsBlockID);
